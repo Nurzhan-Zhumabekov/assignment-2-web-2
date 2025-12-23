@@ -6,7 +6,7 @@ Web application for viewing information about random users and their countries w
 
 1. Random User - name, gender, age, date of birth, city, country, address, photo
 2. Country Information - name, capital, languages, currency, flag (CountryLayer API)
-3. Exchange Rates - conversion to USD and KZT (ExchangeRate API)
+3. Exchange Rates - conversion to USD and KZT (ExchangeRate API, fallback to global rates object)
 4. News - 5 news articles by country (NewsAPI)
 
 ## Technologies
@@ -91,8 +91,8 @@ Response:
   },
   "exchange": {
     "baseCurrency": "GBP",
-    "usd": "1.27",
-    "kzt": "543.20"
+    "toUSD": "1.27",
+    "toKZT": "543.20"
   },
   "news": [
     {
@@ -133,6 +133,7 @@ GET /api/health - Server status check
 - Error handling
 - Image loading
 - Links to full articles
+- Fallback currency rates are provided from a global rates object if API is unavailable
 
 ## Troubleshooting
 
