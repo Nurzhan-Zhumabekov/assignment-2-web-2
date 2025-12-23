@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Global Explorer</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 Global Explorer</h1>
+        <p>Discover people from around the world</p>
+        <div class="btn-container">
+            <button onclick="load()">Load Data</button>
+        </div>
+        <div id="content"></div>
+    </div>
+    <script>
+        async function load(){
+            const c=document.getElementById('content');
+            c.innerHTML='<p>Loading...</p>';
+            try{
+                const r=await fetch('/api/user'),d=await r.json();
+                if(!r.ok||!d.success)throw new Error(d.error);
+                const {user,country,exchange,news}=d;
+                let html=`
+                    <div class="card">
+                        <h2>👤 User Profile</h2>
+                        <img src="${user.picture}" style="border-radius:8px">
+                        <div class="field"><div class="label">Name</div><div class="value">${user.firstName} ${user.lastName}</div></div>
+                        <div class="field"><div class="label">Age</div><div class="value">${user.age} years</div></div>
+                        <div class="field"><div class="label">City</div><div class="value">${user.city}</div></div>
+                        <div class="field"><div class="label">Country</div><div class="value">${user.country}</div></div>
+                        <div class="field"><div class="label">Email</div><div class="value">${user.email}</div></div>
+                    </div>
+                    <div class="card">
+                        <h2>🏳️ Country Info</h2>
+                        ${country.flag?`<img src="${country.flag}" style="border-radius:8px">`:''}
+                        <div class="field"><div class="label">Country</div><div class="value">${country.name}</div></div>
+                        <div class="field"><div class="label">Capital</div><div class="value">${country.capital}</div></div>
+                        <div class="field"><div class="label">Currency</div><div class="value">${country.currencyCode}</div></div>
+                        <div class="field"><div class="label">Exchange Rate</div><div class="value">1 ${exchange.baseCurrency} = ${exchange.usd} USD</div></div>
+                    </div>
+                    <div class="card">
+                        <h2>📰 News Headlines</h2>`;
+                news.forEach(a=>{
+                    html+=`<div class="news-item">`;
+                    if(a.image)html+=`<img src="${a.image}" style="width:100%;max-width:200px;border-radius:6px">`;
+                    html+=`<h3>${a.title}</h3>`;
+                    html+=`<p>${a.description}</p>`;
+                    html+=`<div class="news-footer">${a.source} • ${a.publishedAt}</div></div>`;
+                });
+                html+='</div>';
+                c.innerHTML=html;
+            }catch(e){
+                c.innerHTML=`<div class="error">Error: ${e.message}</div>`;
+            }
+        }
+        window.addEventListener('DOMContentLoaded',load);
+    </script>
+</body>
+</html>
