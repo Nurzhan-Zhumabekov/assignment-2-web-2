@@ -1,149 +1,75 @@
-# Global Explorer
+🌍 Global Explorer
+Description
 
-Web application for viewing information about random users and their countries with integration of 4 APIs.
+Global Explorer is a simple web application built with Node.js and Express.
+It uses public APIs to generate a random user, display country information, and show the exchange rate of the country’s currency in USD and KZT.
 
-## Features
+Features
 
-1. Random User - name, gender, age, date of birth, city, country, address, photo
-2. Country Information - name, capital, languages, currency, flag (CountryLayer API)
-3. Exchange Rates - conversion to USD and KZT (ExchangeRate API, fallback to global rates object)
-4. News - 5 news articles by country (NewsAPI)
+Random user generation
 
-## Technologies
+Country information (capital, language, flag)
 
-- Backend: Node.js, Express.js
-- Frontend: HTML5, CSS3, JavaScript
-- APIs: RandomUser, CountryLayer, ExchangeRate, NewsAPI
+National currency for each country
 
-## Project Structure
+Exchange rates:
 
-```
-project/
-├── index.js          # Server with API integration
-├── package.json      # Dependencies
-├── .env             # API keys (confidential)
-├── .gitignore       # Git rules
-├── README.md        # This file
-└── public/
-    └── index.html   # Frontend application
-```
+1 local currency → USD
 
-## Installation and Setup
+1 local currency → KZT
 
-### 1. Install Dependencies
+Support for multiple countries and currencies
 
-```bash
-npm install
-```
+Technologies
 
-### 2. Get API Keys (Free)
+Node.js
 
-- CountryLayer: https://manage.countrylayer.com/signup/free
-- ExchangeRate: https://www.exchangerate-api.com/
-- NewsAPI: https://newsapi.org/
+Express.js
 
-### 3. Configure .env File
+JavaScript
 
-```env
-COUNTRY_API_KEY=your_key
-EXCHANGE_API_KEY=your_key
-NEWS_API_KEY=your_key
+HTML & CSS
+
+REST APIs
+
+APIs Used
+
+Random User API — https://randomuser.me
+
+CountryLayer API — https://countrylayer.com
+
+ExchangeRate API — https://www.exchangerate-api.com
+
+Project Structure
+/public
+  index.html
+  style.css
+index.js
+.env
+package.json
+README.md
+
+Setup
+
+Create a .env file:
+
+COUNTRY_API_KEY=your_countrylayer_key
+EXCHANGE_API_KEY=your_exchangerate_key
 PORT=3000
-NODE_ENV=development
-```
+Run
+npm install
+node index.js
 
-### 4. Start Server
 
-```bash
-npm start
-```
+Open in browser:
 
-Open in browser: http://localhost:3000
+http://localhost:3000
 
-Click "Get Random User" button to start.
+Example
+Currency: EUR
+1 EUR = 1.08 USD
+1 EUR = 495.20 KZT
 
-## API Endpoints
+Conclusion
 
-GET /api/user - Get user, country, exchange rates and news data
-
-Response:
-```json
-{
-  "success": true,
-  "user": {
-    "firstName": "John",
-    "lastName": "Doe",
-    "gender": "male",
-    "age": 28,
-    "dob": "1995-06-15",
-    "city": "London",
-    "country": "United Kingdom",
-    "address": "123 Main Street, 42",
-    "picture": "https://..."
-  },
-  "country": {
-    "name": "United Kingdom",
-    "capital": "London",
-    "languages": "English",
-    "currencyCode": "GBP",
-    "currencyName": "British Pound",
-    "flag": "https://..."
-  },
-  "exchange": {
-    "baseCurrency": "GBP",
-    "toUSD": "1.27",
-    "toKZT": "543.20"
-  },
-  "news": [
-    {
-      "title": "Article Title",
-      "description": "Article description...",
-      "image": "https://...",
-      "url": "https://...",
-      "source": "BBC News",
-      "publishedAt": "12/23/2025"
-    }
-  ]
-}
-```
-
-GET /api/health - Server status check
-
-## User Interface
-
-- Modern responsive design
-- Card-based layout
-- Data loading animation
-- Error handling
-- Mobile-friendly
-- Image support
-- Article links
-
-## Security
-
-- API keys stored in .env
-- .env added to .gitignore
-- Data validation
-- Error handling
-
-## Key Features
-
-- Asynchronous operations (async/await)
-- JSDoc code documentation
-- Error handling
-- Image loading
-- Links to full articles
-- Fallback currency rates are provided from a global rates object if API is unavailable
-
-## Troubleshooting
-
-If COUNTRY_API_KEY not found error appears:
-- Check .env file exists in root directory
-- Verify API key is correct
-- Restart the server
-
-If server won't start on port 3000:
-- Check if port 3000 is already in use
-- Change PORT value in .env file
-
-Explore the world!
+This project demonstrates basic backend development, API integration, and exchange rate handling using Node.js and Express.

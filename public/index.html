@@ -1,61 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Global Explorer</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>🌍 Global Explorer</h1>
-        <p>Discover people from around the world</p>
-        <div class="btn-container">
-            <button onclick="load()">Load Data</button>
-        </div>
-        <div id="content"></div>
+<div class="container">
+    <h1>🌍 Global Explorer</h1>
+    <p>Discover people from around the world</p>
+
+    <div class="btn-container">
+        <button id="loadBtn">Load Data</button>
     </div>
-    <script>
-        async function load(){
-            const c=document.getElementById('content');
-            c.innerHTML='<p>Loading...</p>';
-            try{
-                const r=await fetch('/api/user'),d=await r.json();
-                if(!r.ok||!d.success)throw new Error(d.error);
-                const {user,country,exchange,news}=d;
-                let html=`
-                    <div class="card">
-                        <h2>👤 User Profile</h2>
-                        <img src="${user.picture}" style="border-radius:8px">
-                        <div class="field"><div class="label">Name</div><div class="value">${user.firstName} ${user.lastName}</div></div>
-                        <div class="field"><div class="label">Age</div><div class="value">${user.age} years</div></div>
-                        <div class="field"><div class="label">City</div><div class="value">${user.city}</div></div>
-                        <div class="field"><div class="label">Country</div><div class="value">${user.country}</div></div>
-                        <div class="field"><div class="label">Email</div><div class="value">${user.email}</div></div>
-                    </div>
-                    <div class="card">
-                        <h2>🏳️ Country Info</h2>
-                        ${country.flag?`<img src="${country.flag}" style="border-radius:8px">`:''}
-                        <div class="field"><div class="label">Country</div><div class="value">${country.name}</div></div>
-                        <div class="field"><div class="label">Capital</div><div class="value">${country.capital}</div></div>
-                        <div class="field"><div class="label">Currency</div><div class="value">${country.currencyCode}</div></div>
-                        <div class="field"><div class="label">Exchange Rate</div><div class="value">1 ${exchange.baseCurrency} = ${exchange.usd} USD</div></div>
-                    </div>
-                    <div class="card">
-                        <h2>📰 News Headlines</h2>`;
-                news.forEach(a=>{
-                    html+=`<div class="news-item">`;
-                    if(a.image)html+=`<img src="${a.image}" style="width:100%;max-width:200px;border-radius:6px">`;
-                    html+=`<h3>${a.title}</h3>`;
-                    html+=`<p>${a.description}</p>`;
-                    html+=`<div class="news-footer">${a.source} • ${a.publishedAt}</div></div>`;
-                });
-                html+='</div>';
-                c.innerHTML=html;
-            }catch(e){
-                c.innerHTML=`<div class="error">Error: ${e.message}</div>`;
-            }
-        }
-        window.addEventListener('DOMContentLoaded',load);
-    </script>
+
+    <div id="content"></div>
+</div>
+
+<script>
+async function loadData() {
+    const content = document.getElementById('content')
+    content.innerHTML = '<p>Loading...</p>'
+
+    try {
+        const response = await fetch('/api/user')
+        if (!response.ok) throw new Error('Server error')
+
+        const data = await response.json()
+        const { user, country, exchange, news } = data
+
+        let html = `
+        <div class="card">
+            <h2>👤 User Profile</h2>
+            <img src="${user.picture}" alt="Profile" class="profile-img">
+
+            <div class="field"><span>First Name:</span> ${user.firstName}</div>
+            <div class="field"><span>Last Name:</span> ${user.lastName}</div>
+            <div class="field"><span>Gender:</span> ${user.gender}</div>
+            <div class="field"><span>Age:</span> ${user.age}</div>
+            <div class="field"><span>Date of Birth:</span> ${user.dob}</div>
+            <div class="field"><span>City:</span> ${user.city}</div>
+            <div class="field"><span>Country:</span> ${user.country}</div>
+            <div class="field"><span>Full Address:</span> ${user.address}</div>
+        </div>
+
+        <div class="card">
+            <h2>🏳️ Country Information</h2>
+            <img src="${country.flag}" alt="Flag" class="flag">
+
+            <div class="field"><span>Country:</span> ${country.name}</div>
+            <div class="field"><span>Capital:</span> ${country.capital}</div>
+            <div class="field"><span>Languages:</span> ${country.languages}</div>
+            <div class="field"><span>Currency:</span> ${country.currencyCode} (${country.currencyName})</div>
+        </div>
+
+        <div class="card">
+    <h2>💱 Exchange Rates</h2>
+    <div class="field">Base currency: ${exchange.base}</div>
+    <div class="field">
+        1 ${exchange.base} = ${exchange.usd} USD
+    </div>
+    <div class="field">
+        1 ${exchange.base} = ${exchange.kzt} KZT
+    </div>
+</div>
+
+
+        <div class="card">
+            <h2>📰 News Headlines</h2>
+        `
+
+        news.forEach(article => {
+            html += `
+            <div class="news-item">
+                ${article.image ? `<img src="${article.image}" alt="News image">` : ''}
+                <h3>${article.title}</h3>
+                <p>${article.description || ''}</p>
+                <a href="${article.url}" target="_blank">Read full article</a>
+            </div>
+            `
+        })
+
+        html += '</div>'
+        content.innerHTML = html
+
+    } catch (error) {
+        content.innerHTML = `<p class="error">Error: ${error.message}</p>`
+    }
+}
+
+document.getElementById('loadBtn').addEventListener('click', loadData)
+window.addEventListener('DOMContentLoaded', loadData)
+</script>
 </body>
 </html>

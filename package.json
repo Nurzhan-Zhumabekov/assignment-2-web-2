@@ -1,7 +1,7 @@
 {
   "name": "global-explorer",
   "version": "1.0.0",
-  "description": "Global User & Country Information Explorer - Aggregate data from multiple APIs to display user profiles, country information, exchange rates, and news headlines",
+  "description": "Global User & Country Information Explorer. Server-side aggregation of Random User, CountryLayer, ExchangeRate and News APIs.",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -11,22 +11,20 @@
   "keywords": [
     "api",
     "random-user",
-    "country-information",
-    "exchange-rates",
-    "news",
+    "countrylayer",
+    "exchange-rate",
+    "newsapi",
     "nodejs",
     "express"
   ],
   "author": "",
   "license": "MIT",
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=18.0.0"
   },
   "dependencies": {
-    "axios": "^1.13.2",
-    "dotenv": "^17.2.3",
-    "express": "^5.2.1",
-    "node-fetch": "^2.6.7"
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "node-fetch": "^3.3.2"
   }
 }
-
